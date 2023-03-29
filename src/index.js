@@ -1,6 +1,7 @@
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import HomeScreen from "./screens/HomeScreen";
 import LoginScreen from "./screens/LoginScreen";
 import RegisterScreen from "./screens/RegisterScreen";
 import SplashScreen from "./screens/SplashScreen";
@@ -31,9 +32,9 @@ export default function RootNavigation() {
 function MyTabs() {
   return (
     <Tab.Navigator>
-      <Tab.Screen name="Login" component={LoginScreen} />
+      <Tab.Screen name="LoginScreen" component={LoginScreen} />
+      <Tab.Screen name="HomeScreen" component={HomeScreen} />
       <Tab.Screen name="Register" component={RegisterScreen} />
-      <Tab.Screen name="Fetch" component={LoginScreen} />
     </Tab.Navigator>
   );
 }

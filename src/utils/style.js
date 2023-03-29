@@ -21,6 +21,12 @@ const Styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
   },
+  btn: {
+    backgroundColor: 'white',
+    color: 'black',
+    width: 150,
+    marginTop: 10
+  }
 });
 
 export default Styles;

@@ -1,22 +1,33 @@
-import { useState } from "react";
+import { signInWithEmailAndPassword } from "firebase/auth";
+import auth from "../config/firebase";
+import { useEffect, useState } from "react";
 import { View } from "react-native";
 import { Button, Text, TextInput } from "react-native-paper";
 import Styles from "../utils/style";
 
-export default function LoginScreen() {
-  const [nome, setNome] = useState("");
+export default function LoginScreen({ route, navigation }) {
+  const [email, setemail] = useState("");
   const [senha, setSenha] = useState("");
+  const [nome, setNome] = useState("");
+
+  useEffect(() => {
+    if (route.params?.nome) {
+      setNome(route.params.nome);
+    }
+  }, [route.params?.nome]);
 
   function log() {
-    signInWithNameAndPassword(auth, nome, senha)
+    signInWithEmailAndPassword(auth, email, senha)
       .then((userCredencial) => {
         console.log("Usuário logado com sucesso !!", userCredencial);
-        Navigation.navigate("HomeScreen");
+        setTimeout(() => {
+          navigation.navigate("HomeScreen", { nome, email, senha });
+        }, 600);
       })
       .catch((error) => {
-        console.log("Erro ao criar usuário", error);
+        console.log("Usuário inexistente", error);
         const errorCode = error.code;
-        if (nome === "" || senha === "") {
+        if (email === "" || senha === "") {
           console.log("Preencha todos os campos.");
           return;
         }
@@ -24,7 +35,7 @@ export default function LoginScreen() {
           console.log("A senha precisa ter mais de 6 caracteres");
           return;
         }
-        if (errorCode === "auth/invalid-nome") {
+        if (errorCode === "auth/invalid-email") {
           console.log("E-mail inválido");
         }
         if (errorCode === "auth/user-not-found") {
@@ -46,9 +57,9 @@ export default function LoginScreen() {
       >
         <View style={{ alignItems: "center" }}>
           <TextInput
-            label="Nome:"
-            value={nome}
-            onChangeText={setNome}
+            label="E-mail:"
+            value={email}
+            onChangeText={setemail}
             style={Styles.input}
           />
         </View>
@@ -61,7 +72,9 @@ export default function LoginScreen() {
             secureTextEntry={true}
           />
 
-          <Button onPress={log}>Logar</Button>
+          <Button onPress={log} style={Styles.btn}>
+            Logar
+          </Button>
         </View>
       </View>
     </View>
